@@ -120,6 +120,7 @@ export interface Config {
   enablePnp?: boolean
   enableModulesDir: boolean
   modulesCacheMaxAge: number
+  powershellShim: boolean
 
   registries: Registries
   ignoreWorkspaceRootCheck: boolean

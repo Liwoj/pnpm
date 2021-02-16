@@ -233,6 +233,7 @@ export async function mutateModules (
             ownLifecycleHooksStdio: opts.ownLifecycleHooksStdio,
             packageManager: opts.packageManager,
             pendingBuilds: ctx.pendingBuilds,
+            powershellShim: opts.powershellShim,
             projects: ctx.projects as Array<{
               binsDir: string
               buildIndex: number
@@ -784,6 +785,7 @@ async function installInContext (
         extraEnv,
         lockfileDir: ctx.lockfileDir,
         optional: opts.include.optionalDependencies,
+        powershellShim: opts.powershellShim,
         rawConfig: opts.rawConfig,
         rootModulesDir: ctx.virtualStoreDir,
         scriptShell: opts.scriptShell,
@@ -809,6 +811,7 @@ async function installInContext (
       if (ctx.publicHoistPattern?.length && path.relative(project.rootDir, opts.lockfileDir) === '') {
         linkedPackages = await linkBins(project.modulesDir, project.binsDir, {
           allowExoticManifests: true,
+          powershellShim: opts.powershellShim,
           warn: binWarn.bind(null, project.rootDir),
         })
       } else {
@@ -833,7 +836,7 @@ async function installInContext (
           )
             .filter(({ manifest }) => manifest != null) as Array<{ location: string, manifest: DependencyManifest }>,
           project.binsDir,
-          { warn: binWarn.bind(null, project.rootDir) }
+          { powershellShim: opts.powershellShim, warn: binWarn.bind(null, project.rootDir) }
         )
       }
       const projectToInstall = projects[index]
